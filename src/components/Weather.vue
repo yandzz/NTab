@@ -2,10 +2,12 @@
 import { ref, onMounted } from 'vue'
 import { useMainStore } from '../stores/main'
 
+// 获取主存储实例
 const store = useMainStore()
 const weather = ref(null)
 const loading = ref(false)
 
+// 异步获取天气数据的函数
 const fetchWeather = async () => {
   if (!store.settings.weatherCity) return
   
@@ -20,6 +22,7 @@ const fetchWeather = async () => {
   loading.value = false
 }
 
+// 在组件挂载时调用 fetchWeather 函数
 onMounted(fetchWeather)
 </script>
 

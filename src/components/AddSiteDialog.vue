@@ -2,13 +2,18 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
+// 定义组件的 props，show 用于控制对话框的显示
 const props = defineProps({
   show: Boolean
 })
 
+// 定义组件的 emits，close 和 add 用于触发事件
 const emit = defineEmits(['close', 'add'])
+
+// 定义响应式变量 isMaximized 用于控制对话框是否最大化
 const isMaximized = ref(false)
 
+// 定义网站地址、名称、图标等相关的响应式变量
 const siteUrl = ref('')
 const siteName = ref('')
 const siteIcon = ref('ri:global-line')
@@ -17,14 +22,25 @@ const iconText = ref('')
 const iconColor = ref('#333333')
 const iconBackground = ref('#ffffff')
 
-const handleIconTypeChange = (type) => {
+// 处理图标类型更改的函数
+const handleIconTypeChange = async (type) => {
   iconType.value = type
   if (type === 'favicon' && siteUrl.value) {
-    // 尝试获取网站favicon
-    siteIcon.value = `https://favicon.yandex.net/favicon/${new URL(siteUrl.value).hostname}`
+    try {
+      const url = new window.URL(siteUrl.value)
+      const hostname = url.hostname
+      const response = await fetch(`https://www.google.com/s2/favicons?domain=${hostname}&sz=64`)
+      if (!response.ok) throw new Error('Failed to fetch favicon')
+      siteIcon.value = response.url
+    } catch (error) {
+      console.error('获取网站图标失败:', error)
+      alert('无法获取网站图标，请检查网址是否正确。')
+      siteIcon.value = 'ri:global-line' // 使用默认图标
+    }
   }
 }
 
+// 处理文件上传的函数
 const handleFileUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
@@ -36,6 +52,11 @@ const handleFileUpload = (event) => {
   }
 }
 
+// 处理表单提交的函数
+// 如果网站地址或名称为空，则不提交
+// 触发 'add' 事件并传递表单数据
+// 重置表单
+// 触发 'close' 事件
 const handleSubmit = () => {
   if (!siteUrl.value || !siteName.value) return
   
@@ -61,6 +82,7 @@ const handleSubmit = () => {
   emit('close')
 }
 
+// 切换对话框最大化状态的函数
 const toggleMaximize = () => {
   isMaximized.value = !isMaximized.value
 }

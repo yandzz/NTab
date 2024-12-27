@@ -1,0 +1,99 @@
+:root {
+  /* 颜色变量 */
+  --app-bg-input: #f0f1f4;
+  --app-shadow-sm: 0 0 1px rgba(0, 0, 0, 0.5);
+  
+  /* 尺寸变量 */
+  --app-icon-size-sm: 12px;
+  --app-icon-size-md: 20px;
+  --app-icon-size-lg: 36px;
+  
+  /* 间距变量 */
+  --app-gap-xs: 6px;
+  --app-gap-sm: 12px;
+  
+  /* 动画变量 */
+  --app-transition-normal: all 0.3s ease;
+  
+  /* 圆角变量 */
+  --app-radius-circle: 50%;
+  --app-radius-sm: 4px;
+  
+  /* 更新磁贴尺寸变量 */
+  --tile-base-size: 48px;
+  --tile-gap: 30px;
+}
+
+/* 公共样式类 */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-gap {
+  display: flex;
+  gap: var(--app-gap-xs);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Element Plus 样式覆盖 */
+:deep(.el-input__inner) {
+  background-color: var(--app-bg-input);
+}
+
+:deep(.el-input-group__append) {
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+  color: white;
+}
+
+:deep(.el-input-group__append button) {
+  color: white;
+  border: none;
+}
+
+:deep(.el-upload) {
+  width: 100%;
+}
+
+:deep(.el-upload-dragger) {
+  width: 100%;
+}
+
+/* 磁贴尺寸类 */
+.tile-1x1 {
+  width: var(--tile-base-size);
+  height: var(--tile-base-size);
+}
+
+.tile-1x2 {
+  width: var(--tile-base-size);
+  height: calc(var(--tile-base-size) * 2 + var(--tile-gap));
+}
+
+.tile-2x1 {
+  width: calc(var(--tile-base-size) * 2 + var(--tile-gap));
+  height: var(--tile-base-size);
+}
+
+.tile-2x2 {
+  width: calc(var(--tile-base-size) * 2 + var(--tile-gap));
+  height: calc(var(--tile-base-size) * 2 + var(--tile-gap));
+}
+
+.tile-2x4 {
+  width: calc(var(--tile-base-size) * 2 + var(--tile-gap));
+  height: calc(var(--tile-base-size) * 4 + var(--tile-gap) * 3);
+}
+
+/* 磁贴容器类 */
+.tiles-container {
+  display: grid;
+  grid-gap: var(--tile-gap);
+  grid-template-columns: repeat(auto-fill, var(--tile-base-size));
+  grid-auto-rows: var(--tile-base-size);
+  grid-auto-flow: dense;
+  padding: var(--tile-gap);
+} 

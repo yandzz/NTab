@@ -19,6 +19,69 @@ const currentSettingMenu = ref('openMode')
 const handleClose = () => {
   router.push('/')
 }
+
+const handleIconTypeChange = (type) => {
+  iconType.value = type
+  if (type === 'favicon' && siteUrl.value) {
+    try {
+      const hostname = new URL(siteUrl.value).hostname
+      siteIcon.value = `https://favicon.yandex.net/favicon/${hostname}`
+    } catch (error) {
+      console.error('Invalid URL:', error)
+      siteIcon.value = 'ri:global-line' // 使用默认图标
+    }
+  }
+}
+
+const errors = ref({
+  url: '',
+  name: ''
+})
+
+const siteUrl = ref('')
+const siteName = ref('')
+
+const handleSubmit = () => {
+  // 重置错误状态
+  errors.value.url = ''
+  errors.value.name = ''
+
+  // 验证网站地址
+  if (!siteUrl.value) {
+    errors.value.url = '请输入网站地址'
+  }
+
+  // 验证网站名称
+  if (!siteName.value) {
+    errors.value.name = '请输入网站名称'
+  }
+
+  // 如果有错误，阻止提交
+  if (errors.value.url || errors.value.name) {
+    return
+  }
+
+  emit('add', {
+    url: siteUrl.value,
+    name: siteName.value,
+    icon: siteIcon.value,
+    iconType: iconType.value,
+    iconText: iconText.value,
+    iconColor: iconColor.value,
+    iconBackground: iconBackground.value
+  })
+
+  // 重置表单
+  siteUrl.value = ''
+  siteName.value = ''
+  siteIcon.value = 'ri:global-line'
+  iconType.value = 'text'
+  iconText.value = ''
+  iconColor.value = '#333333'
+  iconBackground.value = '#ffffff'
+
+  emit('close')
+}
 </script>
 
 <template>
@@ -43,6 +106,27 @@ const handleClose = () => {
         <div class="settings-detail">
           <OpenModeSettings v-if="currentSettingMenu === 'openMode'" />
           <!-- 其他设置组件... -->
+          <div class="form-item">
+            <label>网站地址</label>
+            <input 
+              v-model="siteUrl" 
+              type="url" 
+              placeholder="https://example.com"
+              required
+            >
+            <span v-if="errors.url" class="error-message">{{ errors.url }}</span>
+          </div>
+
+          <div class="form-item">
+            <label>网站名称</label>
+            <input 
+              v-model="siteName" 
+              type="text" 
+              placeholder="网站名称"
+              required
+            >
+            <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -115,5 +199,11 @@ const handleClose = () => {
   padding: 20px;
   overflow-y: auto;
   background: white;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
 }
 </style> 

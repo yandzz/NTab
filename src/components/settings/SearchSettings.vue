@@ -3,9 +3,15 @@ import { useSettingsStore } from '@/stores/settings'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 
+// 从设置存储中导入 useSettingsStore 函数
+// 从 pinia 中导入 storeToRefs 函数
+// 从 Vue 中导入 computed 函数
+
+// 初始化 store 和响应式状态
 const settingsStore = useSettingsStore()
 const { settings } = storeToRefs(settingsStore)
 
+// 计算搜索栏高度滑块的背景渐变
 const sliderStyle = computed(() => {
   const percentage = ((settings.value.searchBarHeight - 36) / (60 - 36)) * 100
   return {
@@ -13,6 +19,7 @@ const sliderStyle = computed(() => {
   }
 })
 
+// 计算搜索栏圆角滑块的背景渐变
 const radiusSliderStyle = computed(() => {
   const percentage = (settings.value.searchBarRadius / 50) * 100
   return {
@@ -20,6 +27,7 @@ const radiusSliderStyle = computed(() => {
   }
 })
 
+// 计算搜索栏透明度滑块的背景渐变
 const opacitySliderStyle = computed(() => {
   const percentage = ((settings.value.searchBarOpacity - 0.1) / 0.9) * 100
   return {
@@ -27,14 +35,31 @@ const opacitySliderStyle = computed(() => {
   }
 })
 
+// 处理开关切换
 const handleSwitch = (key) => {
   settingsStore.updateSetting(key, !settings.value[key])
   settingsStore.saveSettings()
 }
 
+// 处理滑块值更新
 const updateSetting = (key, value) => {
   settingsStore.updateSetting(key, value)
   settingsStore.saveSettings()
+}
+
+const handleIconTypeChange = (type) => {
+  iconType.value = type
+  if (type === 'favicon' && siteUrl.value) {
+    try {
+      const url = new window.URL(siteUrl.value)
+      const hostname = url.hostname
+      console.log('Parsed hostname:', hostname) // 调试输出
+      siteIcon.value = `https://favicon.yandex.net/favicon/${hostname}`
+    } catch (error) {
+      console.error('Invalid URL:', error)
+      siteIcon.value = 'ri:global-line' // 使用默认图标
+    }
+  }
 }
 </script>
 
@@ -256,6 +281,8 @@ input:checked + .slider:before {
   width: 100%;
   height: 4px;
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: #ddd;
   border-radius: 2px;
   outline: none;

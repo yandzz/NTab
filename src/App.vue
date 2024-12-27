@@ -2,6 +2,9 @@
 import { useSettingsStore } from './stores/settings'
 import { onMounted } from 'vue'
 
+// 导入 useSettingsStore 函数以访问设置存储
+// 从 Vue 导入 onMounted 生命周期钩子
+
 const backgroundUrl = 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7'
 
 const settingsStore = useSettingsStore()

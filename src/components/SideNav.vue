@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Settings from './Settings.vue'
 
+// 定义菜单项的响应式数组，每个菜单项包含 id、图标和名称
 const menuItems = ref([
   { id: 'home', icon: 'ri:home-line', name: '首页' },
   { id: 'apps', icon: 'ri:apps-line', name: '应用' },
@@ -20,15 +21,21 @@ const menuItems = ref([
   { id: 'contacts', icon: 'ri:contacts-line', name: '联系人' }
 ])
 
+// 当前选中的路由，默认为 'home'
 const currentRoute = ref('home')
+
+// 控制添加菜单和设置显示的响应式变量
 const showAddMenu = ref(false)
 const showSettings = ref(false)
+
+// 新菜单项的响应式对象
 const newMenu = ref({
   id: '',
   icon: '',
   name: ''
 })
 
+// 处理添加菜单项的函数
 const handleAddMenu = () => {
   if (newMenu.value.id && newMenu.value.icon && newMenu.value.name) {
     menuItems.value.push({

@@ -1,4 +1,5 @@
 <script setup>
+// 定义导航项的数组，每个导航项包含名称和路径
 const navItems = [
   { name: '首页', path: '/' },
   { name: '关于', path: '/about' }

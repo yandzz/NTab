@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Lunar } from 'lunar-javascript'
 
+// 定义小时、分钟、秒、阳历日期、农历日期和星期的响应式变量
 const hours = ref('')
 const minutes = ref('')
 const seconds = ref('')
@@ -9,6 +10,10 @@ const solarDate = ref('')
 const lunarDate = ref('')
 const weekDay = ref('')
 
+// 更新时间的函数
+// 获取当前时间并更新小时、分钟和秒
+// 更新阳历日期和星期
+// 使用 Lunar 类获取农历日期
 const updateTime = () => {
   const now = new Date()
   hours.value = String(now.getHours()).padStart(2, '0')
@@ -31,6 +36,9 @@ const updateTime = () => {
   lunarDate.value = `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`
 }
 
+// 定义定时器变量
+// 在组件挂载时启动定时器，每秒更新一次时间
+// 在组件卸载时清除定时器
 let timer
 onMounted(() => {
   updateTime()
